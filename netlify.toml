@@ -2,7 +2,7 @@
 
 # Build Settings
 [build]
-  command = "cd client && npm install && npm run build"
+  command = "npm run build"
   publish = "client/build"
 
 # Environment Variables
