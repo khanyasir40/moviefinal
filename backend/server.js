@@ -9,7 +9,17 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:3000', // Development
+    'https://moviefinal-mgeh-git-main-khanyasir40s-projects.vercel.app', // Your Vercel frontend
+    'https://moviefinal-mgeh-cag40ovut-khanyasir40s-projects.vercel.app', // Vercel preview
+    /\.vercel\.app$/ // Any Vercel domain
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Health check endpoint FIRST (before other routes)
 app.get('/health', (req, res) => {
@@ -59,14 +69,23 @@ app.use('/api/recommendations', require('./routes/api/recommendations'));
 // Connect to MongoDB
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/movieapp');
-    console.log('✅ MongoDB Connected...');
+    const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/movieapp';
+    console.log('🔗 Attempting to connect to MongoDB...');
+    
+    await mongoose.connect(mongoUri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 10000, // 10 second timeout
+      connectTimeoutMS: 10000,
+    });
+    
+    console.log('✅ MongoDB Connected successfully!');
   } catch (err) {
     console.error('❌ MongoDB connection error:', err.message);
     console.log('⚠️  MongoDB not available - App will run with limited functionality');
     console.log('📝 User registration/login will not work without database');
     console.log('🎬 Movie browsing and search will work with mock data');
-    console.log('💡 To enable full features, set up MongoDB Atlas (see setup-mongodb-atlas.md)');
+    console.log('💡 To enable full features, set up MongoDB Atlas IP whitelist');
     // Don't exit process, let the app run without database for now
     console.log('✅ Continuing without database connection...');
   }
@@ -75,15 +94,8 @@ const connectDB = async () => {
 // Call the connectDB function
 connectDB();
 
-// Serve static assets in production
-if (process.env.NODE_ENV === 'production') {
-  // Set static folder
-  app.use(express.static(path.join(__dirname, '../client/build')));
-
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html'));
-  });
-}
+// API-only backend - Frontend is handled by Vercel
+// No static file serving needed
 
 // Define PORT early
 const PORT = process.env.PORT || 5000;
