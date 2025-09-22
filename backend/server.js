@@ -21,9 +21,9 @@ app.use('/api/recommendations', require('./routes/api/recommendations'));
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/movieapp');
-    console.log('MongoDB Connected...');
+    console.log('✅ MongoDB Connected...');
   } catch (err) {
-    console.error('MongoDB connection error:', err.message);
+    console.error('❌ MongoDB connection error:', err.message);
     console.log('⚠️  MongoDB not available - App will run with limited functionality');
     console.log('📝 User registration/login will not work without database');
     console.log('🎬 Movie browsing and search will work with mock data');
@@ -55,4 +55,8 @@ app.get('/health', (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`📚 API Documentation: http://localhost:${PORT}/health`);
+});

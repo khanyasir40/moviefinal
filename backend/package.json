@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "build": "echo 'No build step required for backend'"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -20,6 +21,10 @@
     "nodemon": "^3.0.1"
   },
   "keywords": ["movie", "api", "backend", "express"],
-  "author": "",
-  "license": "MIT"
+  "author": "khanyasir40",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  }
 }
