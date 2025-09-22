@@ -1,4 +1,5 @@
 // API Configuration for Development and Production
+import { MockMovieService, mockMovies } from '../services/mockService';
 
 // Get base API URL based on environment
 export const getApiUrl = () => {
@@ -9,6 +10,12 @@ export const getApiUrl = () => {
   
   // In development, use localhost
   return process.env.REACT_APP_API_URL || 'http://localhost:5000';
+};
+
+// Check if we should use mock data
+export const shouldUseMockData = () => {
+  return process.env.REACT_APP_USE_MOCK_DATA === 'true' || 
+         process.env.NODE_ENV === 'production'; // Use mock in production until backend is ready
 };
 
 // API endpoints configuration
@@ -49,5 +56,41 @@ export const createApiUrl = (endpoint) => {
 console.log('API Configuration:', {
   NODE_ENV: process.env.NODE_ENV,
   BASE_URL: API_CONFIG.BASE_URL,
-  REACT_APP_API_URL: process.env.REACT_APP_API_URL
+  REACT_APP_API_URL: process.env.REACT_APP_API_URL,
+  USE_MOCK_DATA: shouldUseMockData()
 });
+
+// Enhanced API service with fallback to mock data
+export const apiService = {
+  async get(endpoint) {
+    if (shouldUseMockData()) {
+      console.log('Using mock data for:', endpoint);
+      return this.getMockData(endpoint);
+    }
+
+    try {
+      const response = await fetch(createApiUrl(endpoint));
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.warn('API call failed, falling back to mock data:', error);
+      return this.getMockData(endpoint);
+    }
+  },
+
+  getMockData(endpoint) {
+    if (endpoint.includes('/trending') || endpoint.includes('/popular') || 
+        endpoint.includes('/top_rated') || endpoint.includes('/upcoming')) {
+      return mockMovies;
+    }
+    if (endpoint.includes('/search')) {
+      return mockMovies.slice(0, 3);
+    }
+    if (endpoint.includes('/genres')) {
+      return MockMovieService.getAllGenres();
+    }
+    return [];
+  }
+};

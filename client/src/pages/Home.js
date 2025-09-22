@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Box, Typography, Button, CircularProgress } from '@mui/material';
 import axios from 'axios';
-import { createApiUrl, API_CONFIG } from '../config/api';
+import { createApiUrl, API_CONFIG, apiService } from '../config/api';
 import MovieSlider from '../components/movies/MovieSlider';
 import { useAuth } from '../context/AuthContext';
 
@@ -22,33 +22,35 @@ const Home = () => {
         setLoading(true);
         setError(null);
         // Fetch trending movies
-        const trendingRes = await axios.get(createApiUrl(API_CONFIG.ENDPOINTS.TRENDING));
-        const trendingData = trendingRes.data || [];
-        setTrendingMovies(Array.isArray(trendingData) ? trendingData : []);
+        const trendingData = await apiService.get(API_CONFIG.ENDPOINTS.TRENDING);
+        setTrendingMovies(Array.isArray(trendingData) ? trendingData : (trendingData.results || []));
+        
         // Set featured movie from trending
-        if (trendingData && trendingData.length > 0) {
-          const randomIndex = Math.floor(Math.random() * Math.min(5, trendingData.length));
-          setFeaturedMovie(trendingData[randomIndex]);
+        const trending = Array.isArray(trendingData) ? trendingData : (trendingData.results || []);
+        if (trending && trending.length > 0) {
+          const randomIndex = Math.floor(Math.random() * Math.min(5, trending.length));
+          setFeaturedMovie(trending[randomIndex]);
         } else {
           setFeaturedMovie(null);
         }
+        
         // Fetch popular movies
-        const popularRes = await axios.get(createApiUrl(API_CONFIG.ENDPOINTS.POPULAR));
-        const popularData = popularRes.data || [];
-        setPopularMovies(Array.isArray(popularData) ? popularData : []);
+        const popularData = await apiService.get(API_CONFIG.ENDPOINTS.POPULAR);
+        setPopularMovies(Array.isArray(popularData) ? popularData : (popularData.results || []));
+        
         // Fetch top rated movies
-        const topRatedRes = await axios.get(createApiUrl(API_CONFIG.ENDPOINTS.TOP_RATED));
-        const topRatedData = topRatedRes.data || [];
-        setTopRatedMovies(Array.isArray(topRatedData) ? topRatedData : []);
+        const topRatedData = await apiService.get(API_CONFIG.ENDPOINTS.TOP_RATED);
+        setTopRatedMovies(Array.isArray(topRatedData) ? topRatedData : (topRatedData.results || []));
+        
         // Fetch upcoming movies
-        const upcomingRes = await axios.get(createApiUrl(API_CONFIG.ENDPOINTS.UPCOMING));
-        const upcomingData = upcomingRes.data || [];
-        setUpcomingMovies(Array.isArray(upcomingData) ? upcomingData : []);
+        const upcomingData = await apiService.get(API_CONFIG.ENDPOINTS.UPCOMING);
+        setUpcomingMovies(Array.isArray(upcomingData) ? upcomingData : (upcomingData.results || []));
+        
         // Fetch personalized recommendations if authenticated
         if (isAuthenticated) {
           try {
-            const recommendationsRes = await axios.get(createApiUrl(API_CONFIG.ENDPOINTS.RECOMMENDATIONS));
-            setPersonalizedRecommendations(Array.isArray(recommendationsRes.data.movies) ? recommendationsRes.data.movies : []);
+            const recommendationsData = await apiService.get(API_CONFIG.ENDPOINTS.RECOMMENDATIONS);
+            setPersonalizedRecommendations(Array.isArray(recommendationsData.movies) ? recommendationsData.movies : []);
           } catch (err) {
             console.error('Error fetching recommendations:', err);
           }

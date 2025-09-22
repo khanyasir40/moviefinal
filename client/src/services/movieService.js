@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { createApiUrl, API_CONFIG } from '../config/api';
+import { createApiUrl, API_CONFIG, apiService } from '../config/api';
+import { MockMovieService } from './mockService';
 
 // Base API URL - Use environment variable for production
 const API_BASE_URL = `${API_CONFIG.BASE_URL}/api`;
@@ -11,11 +12,11 @@ class MovieService {
   // Fetch movie details by ID
   static async getMovieById(movieId) {
     try {
-      const response = await axios.get(`${API_BASE_URL}/movies/${movieId}`);
-      return response.data;
+      const response = await apiService.get(`/movies/${movieId}`);
+      return response.data || response;
     } catch (error) {
       console.error('Error fetching movie details:', error);
-      throw error;
+      return MockMovieService.getMovieById(movieId);
     }
   }
 
@@ -34,22 +35,22 @@ class MovieService {
   // Search movies
   static async searchMovies(query, page = 1) {
     try {
-      const response = await axios.get(`${API_BASE_URL}/movies/search?query=${encodeURIComponent(query)}&page=${page}`);
-      return response.data;
+      const response = await apiService.get(`/movies/search?query=${encodeURIComponent(query)}&page=${page}`);
+      return response.data || response;
     } catch (error) {
       console.error('Error searching movies:', error);
-      return [];
+      return MockMovieService.searchMovies(query, page);
     }
   }
 
   // Get movies by category
   static async getMoviesByCategory(category, page = 1) {
     try {
-      const response = await axios.get(`${API_BASE_URL}/movies/${category}?page=${page}`);
-      return response.data;
+      const response = await apiService.get(`/movies/${category}?page=${page}`);
+      return response.data || response;
     } catch (error) {
       console.error('Error fetching movies by category:', error);
-      return [];
+      return MockMovieService.getMoviesByCategory(category, page);
     }
   }
 
