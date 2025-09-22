@@ -22,8 +22,10 @@
 
 ### **🔄 Phase 2: BACKEND DEPLOYMENT (IN PROGRESS)**
 - **Platform:** Render.com
-- **Status:** 🔄 **AWAITING MANUAL SETUP**
+- **Status:** 🔄 **BUILDING ON RENDER** ✨
 - **Target URL:** `https://moviefinal-backend-khanyasir40.onrender.com`
+- **Build Started:** 2:20 PM
+- **Expected Completion:** 2-3 minutes
 
 **Required Manual Steps:**
 1. **✅ STEP 1:** Go to https://render.com

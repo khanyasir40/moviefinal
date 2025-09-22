@@ -3,9 +3,9 @@ import { MockMovieService, mockMovies } from '../services/mockService';
 
 // Get base API URL based on environment
 export const getApiUrl = () => {
-  // In production, use the Railway backend URL
+  // In production, use the Render backend URL
   if (process.env.NODE_ENV === 'production') {
-    return process.env.REACT_APP_API_URL || 'https://zestful-enchantment-production.up.railway.app';
+    return process.env.REACT_APP_API_URL || 'https://moviefinal-backend-khanyasir40.onrender.com';
   }
   
   // In development, use localhost

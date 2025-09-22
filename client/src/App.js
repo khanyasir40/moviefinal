@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from './theme';
