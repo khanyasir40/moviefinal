@@ -1,0 +1,18 @@
+# Render Configuration for Movie App Backend
+services:
+  - type: web
+    name: moviefinal-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        value: mongodb+srv://yasirkhan1_db_user:9920149107@cluster0.0nvooqy.mongodb.net/movieapp?retryWrites=true&w=majority&appName=Cluster0
+      - key: PORT
+        fromService:
+          type: web
+          name: moviefinal-backend
+          property: port
