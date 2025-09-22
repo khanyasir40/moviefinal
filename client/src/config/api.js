@@ -6,7 +6,7 @@ export const getApiUrl = () => {
   // In production, use the Vercel backend URL
   if (process.env.NODE_ENV === 'production') {
     return process.env.REACT_APP_API_URL || 
-           'https://movie-app-backend-1za92656v-khanyasir40s-projects.vercel.app';
+           'https://movie-app-backend-zeta.vercel.app';
   }
   
   // In development, use localhost
