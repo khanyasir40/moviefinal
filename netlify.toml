@@ -3,14 +3,15 @@
 # Build Settings
 [build]
   base = "client"
-  command = "npm run build"
-  publish = "client/build"
+  command = "npm install && npm run build"
+  publish = "build"
 
 # Environment Variables
 [build.environment]
   REACT_APP_API_URL = "https://moviefinal-backend-khanyasir40.onrender.com"
   REACT_APP_NODE_ENV = "production"
   CI = "false"
+  NODE_VERSION = "18"
 
 # Headers for Security
 [[headers]]
@@ -26,7 +27,3 @@
   from = "/*"
   to = "/index.html"
   status = 200
-
-# Functions (if needed for serverless API)
-[functions]
-  directory = "functions"
