@@ -1,0 +1,32 @@
+{
+  "name": "movie-recommendation-app",
+  "version": "1.0.0",
+  "description": "A Netflix-like movie recommendation application",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js",
+    "client": "cd client && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "client-install": "cd client && npm install",
+    "backend-install": "cd backend && npm install",
+    "install-all": "npm install && npm run backend-install && npm run client-install",
+    "build": "cd client && npm run build",
+    "heroku-postbuild": "npm run backend-install && npm run client-install && npm run build"
+  },
+  "keywords": [
+    "movie",
+    "recommendation",
+    "netflix",
+    "imdb",
+    "letterboxd"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

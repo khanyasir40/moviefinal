@@ -1,0 +1,23 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dark background circle -->
+  <circle cx="256" cy="256" r="256" fill="#121212"/>
+  
+  <!-- Film reel elements -->
+  <circle cx="256" cy="256" r="200" stroke="#E50914" stroke-width="12"/>
+  
+  <!-- Film sprocket holes -->
+  <circle cx="256" cy="106" r="20" fill="#E50914"/>
+  <circle cx="256" cy="406" r="20" fill="#E50914"/>
+  <circle cx="106" cy="256" r="20" fill="#E50914"/>
+  <circle cx="406" cy="256" r="20" fill="#E50914"/>
+  <circle cx="181" cy="131" r="20" fill="#E50914"/>
+  <circle cx="331" cy="131" r="20" fill="#E50914"/>
+  <circle cx="181" cy="381" r="20" fill="#E50914"/>
+  <circle cx="331" cy="381" r="20" fill="#E50914"/>
+  
+  <!-- Play button triangle -->
+  <path d="M220 190L320 256L220 322V190Z" fill="#FFFFFF"/>
+  
+  <!-- Text -->
+  <text x="256" y="450" font-family="Arial" font-size="40" font-weight="bold" fill="#FFFFFF" text-anchor="middle">MovieMate</text>
+</svg>
