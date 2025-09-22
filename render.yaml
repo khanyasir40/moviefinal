@@ -1,6 +1,8 @@
+# Render Blueprint Configuration for Movie App
 services:
+  # Backend API Service
   - type: web
-    name: moviefinal-backend-khanyasir40
+    name: movie-app-backend
     env: node
     plan: free
     region: oregon
@@ -13,6 +15,24 @@ services:
       - key: NODE_ENV
         value: production
       - key: MONGO_URI
-        value: mongodb+srv://yasirkhan1_db_user:9920149107@cluster0.0nvooqy.mongodb.net/movieapp?retryWrites=true&w=majority&appName=Cluster0
+        value: mongodb+srv://yasirkhan1_db_user:9920149Yasir@movieapp-cluster.0nvooqy.mongodb.net/movieapp?retryWrites=true&w=majority
+      - key: JWT_SECRET
+        value: movie_app_jwt_secret_key_2024_render_deployment
       - key: PORT
-        value: 10000
+        value: 5000
+
+  # Frontend Static Site  
+  - type: web
+    name: movie-app-frontend
+    env: static
+    plan: free
+    region: oregon
+    branch: main
+    rootDir: client
+    buildCommand: npm run build
+    staticPublishPath: build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://movie-app-backend.onrender.com
+      - key: NODE_VERSION
+        value: "18"

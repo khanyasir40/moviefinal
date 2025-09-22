@@ -3,9 +3,11 @@ import { MockMovieService, mockMovies } from '../services/mockService';
 
 // Get base API URL based on environment
 export const getApiUrl = () => {
-  // In production, use the Render backend URL
+  // In production, try Vercel backend first, then fallback to Render
   if (process.env.NODE_ENV === 'production') {
-    return process.env.REACT_APP_API_URL || 'https://moviefinal-backend-khanyasir40.onrender.com';
+    return process.env.REACT_APP_API_URL || 
+           'https://movie-app-backend-khanyasir40.vercel.app' || 
+           'https://moviefinal-backend-khanyasir40.onrender.com';
   }
   
   // In development, use localhost

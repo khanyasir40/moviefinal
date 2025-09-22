@@ -1,8 +1,0 @@
-
-✅ BACKEND DEPLOYMENT SUCCESSFUL!
-Timestamp: 22/9/2025, 2:23:01 pm
-Status Code: 200
-Response Time: N/A
-Backend URL: https://moviefinal-backend-khanyasir40.onrender.com
-
-🎯 READY FOR FRONTEND DEPLOYMENT!
