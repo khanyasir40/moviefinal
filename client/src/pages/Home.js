@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Box, Typography, Button, CircularProgress } from '@mui/material';
 import axios from 'axios';
+import { createApiUrl, API_CONFIG } from '../config/api';
 import MovieSlider from '../components/movies/MovieSlider';
 import { useAuth } from '../context/AuthContext';
 
@@ -21,7 +22,7 @@ const Home = () => {
         setLoading(true);
         setError(null);
         // Fetch trending movies
-        const trendingRes = await axios.get('/api/movies/trending');
+        const trendingRes = await axios.get(createApiUrl(API_CONFIG.ENDPOINTS.TRENDING));
         const trendingData = trendingRes.data || [];
         setTrendingMovies(Array.isArray(trendingData) ? trendingData : []);
         // Set featured movie from trending
@@ -32,21 +33,21 @@ const Home = () => {
           setFeaturedMovie(null);
         }
         // Fetch popular movies
-        const popularRes = await axios.get('/api/movies/popular');
+        const popularRes = await axios.get(createApiUrl(API_CONFIG.ENDPOINTS.POPULAR));
         const popularData = popularRes.data || [];
         setPopularMovies(Array.isArray(popularData) ? popularData : []);
         // Fetch top rated movies
-        const topRatedRes = await axios.get('/api/movies/top_rated');
+        const topRatedRes = await axios.get(createApiUrl(API_CONFIG.ENDPOINTS.TOP_RATED));
         const topRatedData = topRatedRes.data || [];
         setTopRatedMovies(Array.isArray(topRatedData) ? topRatedData : []);
         // Fetch upcoming movies
-        const upcomingRes = await axios.get('/api/movies/upcoming');
+        const upcomingRes = await axios.get(createApiUrl(API_CONFIG.ENDPOINTS.UPCOMING));
         const upcomingData = upcomingRes.data || [];
         setUpcomingMovies(Array.isArray(upcomingData) ? upcomingData : []);
         // Fetch personalized recommendations if authenticated
         if (isAuthenticated) {
           try {
-            const recommendationsRes = await axios.get('/api/recommendations');
+            const recommendationsRes = await axios.get(createApiUrl(API_CONFIG.ENDPOINTS.RECOMMENDATIONS));
             setPersonalizedRecommendations(Array.isArray(recommendationsRes.data.movies) ? recommendationsRes.data.movies : []);
           } catch (err) {
             console.error('Error fetching recommendations:', err);

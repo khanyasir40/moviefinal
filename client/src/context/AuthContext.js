@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer, useCallback } from 'react';
 import axios from 'axios';
+import { createApiUrl, API_CONFIG } from '../config/api';
 
 // Create context
 const AuthContext = createContext();
@@ -85,8 +86,8 @@ export const AuthProvider = ({ children }) => {
     }
 
     try {
-      console.log('AuthContext: Loading user from /api/auth');
-      const res = await axios.get('/api/auth');
+      console.log('AuthContext: Loading user from', createApiUrl(API_CONFIG.ENDPOINTS.AUTH));
+      const res = await axios.get(createApiUrl(API_CONFIG.ENDPOINTS.AUTH));
       console.log('AuthContext: User loaded:', res.data);
       dispatch({ type: 'USER_LOADED', payload: res.data });
     } catch (err) {
@@ -109,7 +110,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     try {
-      const res = await axios.post('/api/users', formData, config);
+      const res = await axios.post(createApiUrl(API_CONFIG.ENDPOINTS.REGISTER), formData, config);
       dispatch({ type: 'REGISTER_SUCCESS', payload: res.data });
       loadUser();
     } catch (err) {
@@ -130,11 +131,11 @@ export const AuthProvider = ({ children }) => {
     };
 
     try {
-      console.log('AuthContext: Attempting login to /api/auth');
+      console.log('AuthContext: Attempting login to', createApiUrl(API_CONFIG.ENDPOINTS.AUTH));
       console.log('AuthContext: Request data:', formData);
       console.log('AuthContext: Axios config:', config);
       
-      const res = await axios.post('/api/auth', formData, config);
+      const res = await axios.post(createApiUrl(API_CONFIG.ENDPOINTS.AUTH), formData, config);
       console.log('AuthContext: Login response:', res.data);
       
       dispatch({ type: 'LOGIN_SUCCESS', payload: res.data });
@@ -175,7 +176,7 @@ export const AuthProvider = ({ children }) => {
   // Add movie to favorites
   const addToFavorites = async (movieId) => {
     try {
-      const res = await axios.put(`/api/users/favorites/${movieId}`);
+      const res = await axios.put(createApiUrl(`${API_CONFIG.ENDPOINTS.FAVORITES}/${movieId}`));
       dispatch({
         type: 'UPDATE_USER',
         payload: { favorites: res.data }
@@ -190,7 +191,7 @@ export const AuthProvider = ({ children }) => {
   // Remove movie from favorites
   const removeFromFavorites = async (movieId) => {
     try {
-      const res = await axios.delete(`/api/users/favorites/${movieId}`);
+      const res = await axios.delete(createApiUrl(`${API_CONFIG.ENDPOINTS.FAVORITES}/${movieId}`));
       dispatch({
         type: 'UPDATE_USER',
         payload: { favorites: res.data }
@@ -205,7 +206,7 @@ export const AuthProvider = ({ children }) => {
   // Add movie to watchlist
   const addToWatchlist = async (movieId) => {
     try {
-      const res = await axios.put(`/api/users/watchlist/${movieId}`);
+      const res = await axios.put(createApiUrl(`${API_CONFIG.ENDPOINTS.WATCHLIST}/${movieId}`));
       dispatch({
         type: 'UPDATE_USER',
         payload: { watchlist: res.data }
@@ -220,7 +221,7 @@ export const AuthProvider = ({ children }) => {
   // Remove movie from watchlist
   const removeFromWatchlist = async (movieId) => {
     try {
-      const res = await axios.delete(`/api/users/watchlist/${movieId}`);
+      const res = await axios.delete(createApiUrl(`${API_CONFIG.ENDPOINTS.WATCHLIST}/${movieId}`));
       dispatch({
         type: 'UPDATE_USER',
         payload: { watchlist: res.data }
@@ -235,7 +236,7 @@ export const AuthProvider = ({ children }) => {
   // Rate a movie
   const rateMovie = async (movieId, rating) => {
     try {
-      const res = await axios.post(`/api/users/ratings/${movieId}`, { rating });
+      const res = await axios.post(createApiUrl(`${API_CONFIG.ENDPOINTS.RATINGS}/${movieId}`), { rating });
       dispatch({
         type: 'UPDATE_USER',
         payload: { ratings: res.data }

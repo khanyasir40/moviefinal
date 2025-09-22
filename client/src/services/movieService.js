@@ -1,7 +1,10 @@
 import axios from 'axios';
+import { createApiUrl, API_CONFIG } from '../config/api';
 
-// Base API URL
-const API_BASE_URL = '/api';
+// Base API URL - Use environment variable for production
+const API_BASE_URL = `${API_CONFIG.BASE_URL}/api`;
+
+console.log('MovieService - API Base URL:', API_BASE_URL); // Debug log
 
 // Movie Service Class
 class MovieService {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { createApiUrl, API_CONFIG } from '../config/api';
 import {
   Container,
   Typography,
@@ -81,12 +82,12 @@ const Search = () => {
         const requestParams = { page: currentPage };
         
         if (query) {
-          endpoint = `/api/movies/search`;
+          endpoint = createApiUrl(API_CONFIG.ENDPOINTS.SEARCH);
           requestParams.query = query;
         } else if (genre) {
-          endpoint = `/api/movies/genre/${genre}`;
+          endpoint = createApiUrl(`${API_CONFIG.ENDPOINTS.BY_GENRE}/${genre}`);
         } else if (category) {
-          endpoint = `/api/movies/${category}`;
+          endpoint = createApiUrl(`${API_CONFIG.ENDPOINTS.MOVIES}/${category}`);
         } else {
           setLoading(false);
           return;

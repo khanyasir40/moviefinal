@@ -1,10 +1,7 @@
 {
   "version": 2,
+  "name": "movie-app-frontend",
   "builds": [
-    {
-      "src": "backend/server.js",
-      "use": "@vercel/node"
-    },
     {
       "src": "client/package.json",
       "use": "@vercel/static-build",
@@ -15,15 +12,26 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/backend/server.js"
+      "src": "/static/(.*)",
+      "dest": "/client/build/static/$1"
+    },
+    {
+      "src": "/(.*\\.(js|css|ico|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|map))$",
+      "dest": "/client/build/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "/client/$1"
+      "dest": "/client/build/index.html"
     }
   ],
   "env": {
-    "NODE_ENV": "production"
+    "REACT_APP_API_URL": "https://zestful-enchantment-production.up.railway.app",
+    "REACT_APP_NODE_ENV": "production"
+  },
+  "build": {
+    "env": {
+      "REACT_APP_API_URL": "https://zestful-enchantment-production.up.railway.app",
+      "REACT_APP_NODE_ENV": "production"
+    }
   }
 }
