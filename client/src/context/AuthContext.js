@@ -24,7 +24,8 @@ const authReducer = (state, action) => {
         ...state,
         isAuthenticated: true,
         loading: false,
-        user: payload
+        user: payload,
+        error: null
       };
     case 'REGISTER_SUCCESS':
     case 'LOGIN_SUCCESS':
@@ -87,7 +88,9 @@ export const AuthProvider = ({ children }) => {
 
     try {
       console.log('AuthContext: Loading user from', createApiUrl(API_CONFIG.ENDPOINTS.AUTH));
-      const res = await axios.get(createApiUrl(API_CONFIG.ENDPOINTS.AUTH));
+      const res = await axios.get(createApiUrl(API_CONFIG.ENDPOINTS.AUTH), {
+        timeout: 10000 // 10 second timeout
+      });
       console.log('AuthContext: User loaded:', res.data);
       dispatch({ type: 'USER_LOADED', payload: res.data });
     } catch (err) {
@@ -247,6 +250,11 @@ export const AuthProvider = ({ children }) => {
       return null;
     }
   };
+
+  React.useEffect(() => {
+    // Load user on component mount
+    loadUser();
+  }, [loadUser]);
 
   React.useEffect(() => {
     // Debug: log auth state on every change

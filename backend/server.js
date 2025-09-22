@@ -71,6 +71,7 @@ const connectDB = async () => {
   try {
     const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/movieapp';
     console.log('🔗 Attempting to connect to MongoDB...');
+    console.log('📍 Using URI:', mongoUri.substring(0, 40) + '...');
     
     await mongoose.connect(mongoUri, {
       serverSelectionTimeoutMS: 10000, // 10 second timeout

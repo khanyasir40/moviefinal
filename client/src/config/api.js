@@ -64,20 +64,47 @@ console.log('API Configuration:', {
 export const apiService = {
   async get(endpoint) {
     try {
-      const response = await fetch(createApiUrl(endpoint));
+      console.log('API Request to:', createApiUrl(endpoint));
+      
+      // Add timeout to prevent infinite loading
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      
+      const response = await fetch(createApiUrl(endpoint), {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+      
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-      return await response.json();
+      
+      const data = await response.json();
+      console.log('API Response successful for:', endpoint);
+      return data;
     } catch (error) {
-      console.warn('API call failed:', error);
+      console.error('API call failed for', endpoint, ':', error.message);
+      
+      // If it's a timeout or network error, try mock data
+      if (error.name === 'AbortError' || error.message.includes('fetch')) {
+        console.log('Network timeout or error, falling back to mock data');
+        return this.getMockData(endpoint);
+      }
+      
       // Only fall back to mock data if explicitly enabled
       if (shouldUseMockData()) {
         console.log('Falling back to mock data for:', endpoint);
         return this.getMockData(endpoint);
       }
-      // Otherwise throw error to handle in components
-      throw error;
+      
+      // Return empty array to prevent loading loops
+      console.log('Returning empty data to prevent infinite loading');
+      return [];
     }
   },
 
