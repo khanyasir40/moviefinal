@@ -1,9 +1,9 @@
 [build]
 builder = "nixpacks"
-buildCommand = "cd backend && npm install --only=production"
+buildCommand = "cd backend && npm ci --only=production"
 
 [deploy]
-startCommand = "cd backend && node server.js"
+startCommand = "cd backend && node app.js"
 healthcheckPath = "/health"
 healthcheckTimeout = 300
 restartPolicyType = "on_failure"
@@ -11,3 +11,4 @@ restartPolicyType = "on_failure"
 [env]
 NODE_ENV = "production"
 PORT = "${{ PORT }}"
+HOST = "0.0.0.0"
