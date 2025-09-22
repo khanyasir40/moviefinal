@@ -3,7 +3,7 @@ builder = "nixpacks"
 buildCommand = "cd backend && npm install"
 
 [deploy]
-startCommand = "cd backend && node minimal.js"
+startCommand = "cd backend && node server.js"
 healthcheckPath = "/health"
 healthcheckTimeout = 300
 restartPolicyType = "on_failure"

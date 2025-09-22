@@ -5,10 +5,10 @@ nixPkgs = ['nodejs_18']
 cmds = ['cd backend && npm install']
 
 [phases.build]
-cmds = ['echo "Minimal backend ready"']
+cmds = ['echo "Backend ready for deployment"']
 
 [start]
-cmd = 'cd backend && node minimal.js'
+cmd = 'cd backend && node server.js'
 
 [variables]
 NODE_ENV = 'production'

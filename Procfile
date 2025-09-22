@@ -1,1 +1,1 @@
-web: cd backend && node minimal.js
+web: cd backend && node server.js
