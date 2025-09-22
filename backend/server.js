@@ -14,11 +14,12 @@ app.use(cors({
     'http://localhost:3000', // Development
     'https://moviefinal-mgeh-git-main-khanyasir40s-projects.vercel.app', // Your Vercel frontend
     'https://moviefinal-mgeh-cag40ovut-khanyasir40s-projects.vercel.app', // Vercel preview
+    'https://moviefinal-khanyasir40s-projects.vercel.app', // Another possible frontend URL
     /\.vercel\.app$/ // Any Vercel domain
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token']
 }));
 
 // Health check endpoint FIRST (before other routes)

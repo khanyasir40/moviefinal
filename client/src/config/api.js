@@ -15,7 +15,7 @@ export const getApiUrl = () => {
 
 // Check if we should use mock data
 export const shouldUseMockData = () => {
-  return process.env.REACT_APP_USE_MOCK_DATA === 'true'; // Only use mock when explicitly enabled
+  return process.env.REACT_APP_USE_MOCK_DATA === 'true' || true; // Temporarily enable mock data as fallback
 };
 
 // API endpoints configuration

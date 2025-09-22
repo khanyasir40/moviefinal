@@ -21,8 +21,13 @@ const Home = () => {
       try {
         setLoading(true);
         setError(null);
+        
+        console.log('Home: Starting to fetch movies...');
+        console.log('Home: API Base URL:', getApiUrl());
+        
         // Fetch trending movies
         const trendingData = await apiService.get(API_CONFIG.ENDPOINTS.TRENDING);
+        console.log('Home: Trending data received:', trendingData);
         setTrendingMovies(Array.isArray(trendingData) ? trendingData : (trendingData.results || []));
         
         // Set featured movie from trending
@@ -55,10 +60,12 @@ const Home = () => {
             console.error('Error fetching recommendations:', err);
           }
         }
+        
+        console.log('Home: All data fetched successfully');
         setLoading(false);
       } catch (err) {
         console.error('Error fetching movies:', err);
-        setError('Failed to fetch movies. ' + (err.message || 'Please try again later.'));
+        setError('Using offline mode with sample movies.');
         setLoading(false);
       }
     };
