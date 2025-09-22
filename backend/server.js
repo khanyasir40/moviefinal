@@ -49,5 +49,10 @@ if (process.env.NODE_ENV === 'production') {
 // Define PORT
 const PORT = process.env.PORT || 5000;
 
+// Health check endpoint for Railway
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK', message: 'Server is running!' });
+});
+
 // Start server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
