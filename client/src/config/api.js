@@ -14,8 +14,7 @@ export const getApiUrl = () => {
 
 // Check if we should use mock data
 export const shouldUseMockData = () => {
-  return process.env.REACT_APP_USE_MOCK_DATA === 'true' || 
-         process.env.NODE_ENV === 'production'; // Use mock in production until backend is ready
+  return process.env.REACT_APP_USE_MOCK_DATA === 'true'; // Only use mock when explicitly enabled
 };
 
 // API endpoints configuration
@@ -60,14 +59,9 @@ console.log('API Configuration:', {
   USE_MOCK_DATA: shouldUseMockData()
 });
 
-// Enhanced API service with fallback to mock data
+// Enhanced API service with direct backend connection
 export const apiService = {
   async get(endpoint) {
-    if (shouldUseMockData()) {
-      console.log('Using mock data for:', endpoint);
-      return this.getMockData(endpoint);
-    }
-
     try {
       const response = await fetch(createApiUrl(endpoint));
       if (!response.ok) {
@@ -75,8 +69,14 @@ export const apiService = {
       }
       return await response.json();
     } catch (error) {
-      console.warn('API call failed, falling back to mock data:', error);
-      return this.getMockData(endpoint);
+      console.warn('API call failed:', error);
+      // Only fall back to mock data if explicitly enabled
+      if (shouldUseMockData()) {
+        console.log('Falling back to mock data for:', endpoint);
+        return this.getMockData(endpoint);
+      }
+      // Otherwise throw error to handle in components
+      throw error;
     }
   },
 
