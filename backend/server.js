@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Define routes
+// Define routes AFTER health check
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/movies', require('./routes/api/movies'));
@@ -51,12 +51,48 @@ const PORT = process.env.PORT || 5000;
 
 // Health check endpoint for Railway
 app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK', message: 'Server is running!' });
+  try {
+    // Check if database connection is working
+    const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
+    
+    res.status(200).json({ 
+      status: 'OK', 
+      message: 'Movie App Backend is running!',
+      timestamp: new Date().toISOString(),
+      database: dbStatus,
+      port: PORT,
+      environment: process.env.NODE_ENV || 'development'
+    });
+  } catch (error) {
+    console.error('Health check failed:', error);
+    res.status(500).json({ 
+      status: 'ERROR', 
+      message: 'Health check failed',
+      error: error.message 
+    });
+  }
+});
+
+// Add a simple root endpoint as well
+app.get('/', (req, res) => {
+  res.status(200).json({ 
+    message: 'Movie App Backend API is running!',
+    version: '1.0.0',
+    endpoints: {
+      health: '/health',
+      auth: '/api/auth',
+      movies: '/api/movies',
+      users: '/api/users',
+      recommendations: '/api/recommendations'
+    }
+  });
 });
 
 // Start server
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`📚 API Documentation: http://localhost:${PORT}/health`);
+  console.log(`🏥 Health check: http://0.0.0.0:${PORT}/health`);
+  console.log(`📚 API root: http://0.0.0.0:${PORT}/`);
+  console.log(`💾 Database status: ${mongoose.connection.readyState === 1 ? '✅ Connected' : '⚠️  Disconnected'}`);
 });
