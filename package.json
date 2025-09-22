@@ -1,32 +1,20 @@
 {
-  "name": "movie-recommendation-app",
+  "name": "movie-app-fullstack",
   "version": "1.0.0",
-  "description": "A Netflix-like movie recommendation application",
+  "description": "Full-stack Movie Recommendation App",
   "main": "backend/server.js",
   "scripts": {
-    "start": "node backend/server.js",
-    "server": "nodemon backend/server.js",
-    "client": "cd client && npm start",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "client-install": "cd client && npm install",
-    "backend-install": "cd backend && npm install",
-    "install-all": "npm install && npm run backend-install && npm run client-install",
-    "build": "cd client && npm run build",
-    "heroku-postbuild": "npm run backend-install && npm run client-install && npm run build"
+    "start": "cd backend && node server.js",
+    "dev": "cd backend && npm run dev",
+    "install-backend": "cd backend && npm install",
+    "install-frontend": "cd frontend && npm install",
+    "build": "cd backend && npm install --only=production"
   },
-  "keywords": [
-    "movie",
-    "recommendation",
-    "netflix",
-    "imdb",
-    "letterboxd"
-  ],
-  "author": "",
-  "license": "MIT",
-  "dependencies": {
-    "concurrently": "^8.2.2"
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
   },
-  "devDependencies": {
-    "nodemon": "^3.0.1"
-  }
+  "keywords": ["movie", "recommendation", "fullstack", "react", "nodejs"],
+  "author": "khanyasir40",
+  "license": "MIT"
 }
